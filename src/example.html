@@ -1,0 +1,302 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Webflow Multistep Form Example</title>
+    
+    <style>
+        /* Basic styling for demonstration */
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, sans-serif;
+            max-width: 600px;
+            margin: 40px auto;
+            padding: 0 20px;
+        }
+
+        .form-container {
+            background: #fff;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        .progress-container {
+            background: #eee;
+            height: 4px;
+            margin-bottom: 30px;
+            border-radius: 2px;
+        }
+
+        .form_progress-bar {
+            background: #2196F3;
+            height: 100%;
+            width: 0;
+            transition: width 0.3s ease;
+            border-radius: 2px;
+        }
+
+        .step-counter {
+            font-size: 14px;
+            color: #666;
+            margin-bottom: 20px;
+        }
+
+        .contact-form_step {
+            display: none;
+        }
+
+        .field-wrapper {
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 500;
+        }
+
+        input[type="text"],
+        input[type="email"],
+        select {
+            width: 100%;
+            padding: 8px 12px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 16px;
+        }
+
+        .checkbox-wrapper {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .radio-group {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            margin-bottom: 20px;
+        }
+
+        .radio-wrapper {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .radio-wrapper input[type="radio"] {
+            margin: 0;
+        }
+
+        .radio-wrapper label {
+            margin: 0;
+            cursor: pointer;
+        }
+
+        .button-wrapper {
+            display: flex;
+            gap: 10px;
+            margin-top: 30px;
+        }
+
+        .form_button-next,
+        .form_button-prev {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+
+        .form_button-next {
+            background: #2196F3;
+            color: white;
+        }
+
+        .form_button-prev {
+            background: #e0e0e0;
+        }
+
+        .w-form-error {
+            display: none;
+            color: #dc3545;
+            font-size: 14px;
+            margin-top: 4px;
+        }
+
+        input.error {
+            border-color: #dc3545;
+        }
+
+        .loading-step {
+            text-align: center;
+            padding: 40px 0;
+        }
+
+        .loading-spinner {
+            display: inline-block;
+        }
+
+        .spinner-border {
+            width: 3rem;
+            height: 3rem;
+            border: 0.25em solid currentColor;
+            border-right-color: transparent;
+            border-radius: 50%;
+            animation: spinner-border .75s linear infinite;
+        }
+
+        @keyframes spinner-border {
+            to { transform: rotate(360deg); }
+        }
+
+        .visually-hidden {
+            position: absolute;
+            width: 1px;
+            height: 1px;
+            padding: 0;
+            margin: -1px;
+            overflow: hidden;
+            clip: rect(0, 0, 0, 0);
+            border: 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="form-container">
+        <!-- Form using the configurable class names -->
+        <form id="wf-form-Contact-Form">
+            <!-- Progress Bar -->
+            <div class="progress-container">
+                <div class="form_progress-bar"></div>
+            </div>
+            <div class="step-counter">Step 1 of 4</div>
+
+            <!-- Step 1: Basic Info -->
+            <div class="contact-form_step">
+                <h2>Personal Information</h2>
+                
+                <div class="field-wrapper">
+                    <label for="fullname">Full Name</label>
+                    <input type="text" id="fullname" name="fullname" required>
+                    <div class="w-form-error">Please enter your full name</div>
+                </div>
+
+                <div class="field-wrapper">
+                    <label for="email">Email Address</label>
+                    <input type="email" id="email" name="email" required>
+                    <div class="w-form-error">Please enter a valid email address</div>
+                </div>
+
+                <div class="button-wrapper">
+                    <button type="button" class="form_button-next">Next</button>
+                </div>
+            </div>
+
+            <!-- Loading Step Example -->
+            <div class="contact-form_step loading-step">
+                <div class="loading-spinner">
+                    <div class="spinner-border" role="status">
+                        <span class="visually-hidden">Loading...</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Step 2: Auto-advance Radio Step -->
+            <div class="contact-form_step">
+                <h2>Contact Preference</h2>
+                
+                <div class="field-wrapper">
+                    <label>How would you like us to contact you?</label>
+                    <div class="radio-group">
+                        <div class="radio-wrapper">
+                            <input type="radio" id="contact-email" name="contact-preference" value="email" required>
+                            <label for="contact-email">By Email</label>
+                        </div>
+                        <div class="radio-wrapper">
+                            <input type="radio" id="contact-phone" name="contact-preference" value="phone" required>
+                            <label for="contact-phone">By Phone</label>
+                        </div>
+                    </div>
+                    <div class="w-form-error">Please select a contact preference</div>
+                </div>
+
+                <div class="button-wrapper">
+                    <button type="button" class="form_button-prev">Previous</button>
+                    <button type="button" class="form_button-next">Next</button>
+                </div>
+            </div>
+
+            <!-- Step 3: Contact Details -->
+            <div class="contact-form_step">
+                <h2>Contact Details</h2>
+                
+                <div class="field-wrapper">
+                    <label for="phone">Phone Number</label>
+                    <input type="text" id="phone" name="phone" required>
+                    <div class="w-form-error">Please enter your phone number</div>
+                </div>
+
+                <div class="field-wrapper">
+                    <label for="address">Address</label>
+                    <input type="text" id="address" name="address" required>
+                    <div class="w-form-error">Please enter your address</div>
+                </div>
+
+                <div class="button-wrapper">
+                    <button type="button" class="form_button-prev">Previous</button>
+                    <button type="button" class="form_button-next">Next</button>
+                </div>
+            </div>
+
+            <!-- Step 4: Final Step -->
+            <div class="contact-form_step">
+                <h2>Confirmation</h2>
+                
+                <div class="field-wrapper">
+                    <div class="checkbox-wrapper">
+                        <input type="checkbox" id="terms" name="terms" required>
+                        <label for="terms">I agree to the terms and conditions</label>
+                    </div>
+                    <div class="w-form-error">You must agree to the terms</div>
+                </div>
+
+                <div class="field-wrapper">
+                    <div class="checkbox-wrapper">
+                        <input type="checkbox" id="newsletter" name="newsletter">
+                        <label for="newsletter">Subscribe to newsletter</label>
+                    </div>
+                </div>
+
+                <div class="button-wrapper">
+                    <button type="button" class="form_button-prev">Previous</button>
+                    <button type="submit" class="form_button-next">Submit</button>
+                </div>
+            </div>
+        </form>
+    </div>
+
+    <!-- Scripts -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="ab-multistep-form.js"></script>
+    <script>
+        $(document).ready(() => {
+            const contactForm = new WebflowMultistepForm({
+                formSelector: '#wf-form-Contact-Form',
+                stepSelector: '.contact-form_step',
+                progressBarSelector: '.form_progress-bar',
+                nextButtonSelector: '.form_button-next',
+                prevButtonSelector: '.form_button-prev',
+                stepCounterSelector: '.step-counter',
+                stepCounterTemplate: 'Step {current} of {total}',
+                autoAdvanceDelay: 500,
+                loadingStepClass: 'loading-step',
+                loadingDelay: 1000,
+                navigateStepsFadeOutTimeout: 500,
+                navigateStepsFadeInTimeout: 500
+            });
+        });
+    </script>
+</body>
+</html>
