@@ -56,6 +56,9 @@ class WebflowMultistepForm {
             if (this.steps.length === 0) throw new Error(`No steps found: ${this.options.stepSelector}`);
             console.log('Number of form steps:', this.steps.length);
 
+            // Show the first step
+            this.steps.eq(0).css('display', 'block');
+
             this.progressBar = this.form.find(this.options.progressBarSelector);
             console.log('Progress bar found:', this.progressBar.length > 0);
 
@@ -327,6 +330,11 @@ class WebflowMultistepForm {
 
     saveState() {
         try {
+            if (!this.form || !this.form[0] || !(this.form[0] instanceof HTMLFormElement)) {
+                console.warn('Invalid form element, skipping state save');
+                return;
+            }
+
             const formData = new FormData(this.form[0]);
             const state = {
                 data: Object.fromEntries(formData),
@@ -335,9 +343,9 @@ class WebflowMultistepForm {
             };
             
             localStorage.setItem('form-state', JSON.stringify(state));
+            console.log('Form state saved successfully');
         } catch (error) {
             console.error('Error saving form state:', error);
-            this.handleError(error);
         }
     }
 

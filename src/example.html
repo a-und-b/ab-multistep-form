@@ -275,12 +275,55 @@
 
     <!-- Scripts -->
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script src="ab-multistep-form.js"></script>
     <script>
-        // Initialize the multistep form
-        $(document).ready(function() {
-            new WebflowMultistepForm();
-        });
-    </script>
+        // Load the external script with a cache-busting query parameter
+        (function() {
+            var d = new Date();
+            var script = document.createElement('script');
+            script.src = "../dist/ab-multistep-form.min.js?_=" + d.getTime();
+            script.defer = true;
+        
+            script.onload = function() {
+                console.log('WebflowMultistepForm script loaded successfully');
+                initializeForm();
+            };
+        
+            script.onerror = function() {
+                console.error('Failed to load WebflowMultistepForm script');
+            };
+        
+            document.head.appendChild(script);
+        
+            function initializeForm() {
+                if (document.readyState === 'loading') {
+                    document.addEventListener('DOMContentLoaded', setupForm);
+                } else {
+                    setupForm();
+                }
+            }
+        
+            function setupForm() {
+                try {
+                    console.log('Initializing WebflowMultistepForm');
+                    const multiStepForm = new WebflowMultistepForm({
+                        navigateStepsFadeOutTimeout: 300,
+                        navigateStepsFadeInTimeout: 300,
+                        autoAdvanceDelay: 750,
+                        loadingDelay: 1500,
+                        loadingTemplate: `
+                            <div class="custom-loader">
+                                <div class="spinner"></div>
+                                <p>Processing...</p>
+                            </div>
+                        `,
+                    });
+                    console.log('WebflowMultistepForm initialized successfully');
+                } catch (error) {
+                    console.error('Error initializing WebflowMultistepForm:', error);
+                }
+            }
+        })();
+        </script>
+    
 </body>
 </html>
