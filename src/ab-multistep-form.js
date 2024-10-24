@@ -79,7 +79,17 @@ class WebflowMultistepForm {
     initForm() {
         try {
             this.form.prop('novalidate', true);
-            this.steps.hide().first().show();
+            
+            // Hide all steps except first using JavaScript
+            this.steps.each((index, step) => {
+                const $step = $(step);
+                if (index === 0) {
+                    $step.css('display', 'block');
+                } else {
+                    $step.css('display', 'none');
+                }
+            });
+
             this.updateDisplay();
 
             // Initialize auto-advance steps
@@ -129,8 +139,11 @@ class WebflowMultistepForm {
             const currentStep = this.steps.eq(this.currentStepIndex);
             const targetStep = this.steps.eq(stepIndex);
 
+            // Use jQuery's fadeOut/fadeIn with display block/none
             currentStep.fadeOut(this.options.navigateStepsFadeOutTimeout, () => {
-                targetStep.fadeIn(this.options.navigateStepsFadeInTimeout);
+                currentStep.css('display', 'none');
+                targetStep.css('display', 'block').hide().fadeIn(this.options.navigateStepsFadeInTimeout);
+                
                 this.currentStepIndex = stepIndex;
                 this.updateDisplay();
                 this.announceStepChange();
