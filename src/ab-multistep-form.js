@@ -1,57 +1,59 @@
 class WebflowMultistepForm {
     constructor(options = {}) {
-        // Default selectors and configuration
+        // Default selectors and configuration using data attributes
         this.options = {
             // Form elements
-            formSelector: '#wf-form-multistep',
-            stepSelector: '.form-step',
-            progressBarSelector: '.progress-bar',
-            stepCounterSelector: '.step-counter',
-            
+            formSelector: '[data-multistep-form="form"]',
+            stepSelector: '[data-multistep-form="step"]',
+            progressBarSelector: '[data-multistep-form="progress-bar"]',
+            stepCounterSelector: '[data-multistep-form="step-counter"]',
+
             // Buttons
-            nextButtonSelector: '.next-button',
-            prevButtonSelector: '.prev-button',
-            submitButtonSelector: '.next-button',
-            
+            nextButtonSelector: '[data-multistep-form="next"]',
+            prevButtonSelector: '[data-multistep-form="prev"]',
+            submitButtonSelector: '[data-multistep-form="submit"]',
+
             // Validation and errors
-            formFieldErrorClass: '.w-form-error',
-            fieldWrapperSelector: '.field-wrapper',
+            formFieldErrorClass: '[data-multistep-form="field-error"]',
+            fieldWrapperSelector: '[data-multistep-form="field-wrapper"]',
             inputErrorClass: 'error',
-            
+
             // Auto-advance
             autoAdvanceStepClass: 'auto-advance-step',
-            
+
             // Timing
             navigateStepsFadeOutTimeout: 150,
             navigateStepsFadeInTimeout: 150,
             autoAdvanceDelay: 500,
-            
+
             // Custom classes for dynamic elements
             progressBarActiveClass: 'active',
             stepActiveClass: 'active',
-            
+
             // Text content
             stepCounterTemplate: 'Step {current} of {total}',
-            
+
             // Loading step configuration
             loadingStepClass: 'loading-step',
             loadingDelay: 2000,
             loadingTemplate: '<div class="loading-spinner">Loading...</div>',
-            
+
             ...options
         };
+
+        // Initialize currentStepIndex
+        this.currentStepIndex = 0;
 
         try {
             // Core elements - now using configured selectors
             this.form = $(this.options.formSelector);
             if (this.form.length === 0) throw new Error(`Form not found: ${this.options.formSelector}`);
-            
+
             this.steps = this.form.find(this.options.stepSelector);
             if (this.steps.length === 0) throw new Error(`No steps found: ${this.options.stepSelector}`);
-            
-            this.progressBar = $(this.options.progressBarSelector);
-            this.stepCounter = $(this.options.stepCounterSelector);
-            this.currentStepIndex = 0;
+
+            this.progressBar = this.form.find(this.options.progressBarSelector);
+            this.stepCounter = this.form.find(this.options.stepCounterSelector);
 
             // Initialize components
             this.initForm();
@@ -79,7 +81,7 @@ class WebflowMultistepForm {
             this.form.prop('novalidate', true);
             this.steps.hide().first().show();
             this.updateDisplay();
-            
+
             // Initialize auto-advance steps
             this.steps.each((index, step) => {
                 const $step = $(step);
@@ -120,7 +122,7 @@ class WebflowMultistepForm {
     navigateToStep(stepIndex, skipPushState = false) {
         try {
             if (stepIndex < 0 || stepIndex >= this.steps.length) return;
-            
+
             const direction = stepIndex > this.currentStepIndex ? 1 : -1;
             if (direction > 0 && !this.validateCurrentStep()) return;
 
@@ -149,12 +151,12 @@ class WebflowMultistepForm {
             // Navigation buttons
             this.form.on('click', `${this.options.nextButtonSelector}, ${this.options.prevButtonSelector}`, (e) => {
                 e.preventDefault();
-                const button = $(e.target);
-                const direction = button.hasClass(this.options.nextButtonSelector.substring(1)) ? 1 : -1;
+                const button = $(e.currentTarget);
+                const direction = button.is(this.options.nextButtonSelector) ? 1 : -1;
                 this.navigateSteps(direction);
             });
 
-            // Auto-advance radio handling
+            // Auto-advance radio handling with corrected selector
             this.form.on('change', `.${this.options.autoAdvanceStepClass} input[type="radio"]`, (e) => {
                 const radio = $(e.target);
                 if (radio.is(':checked')) {
@@ -179,8 +181,8 @@ class WebflowMultistepForm {
                 if (this.validateCurrentStep()) {
                     try {
                         // Clear saved state on successful submission
-                        sessionStorage.removeItem('form-state');
-                        this.form.submit();
+                        localStorage.removeItem('form-state');
+                        this.form.off('submit').submit();
                     } catch (error) {
                         console.error('Error submitting form:', error);
                         this.handleError(error);
@@ -196,20 +198,20 @@ class WebflowMultistepForm {
     navigateSteps(direction, skipLoadingCheck = false) {
         try {
             let nextIndex = this.currentStepIndex + direction;
-            
+
             if (nextIndex < 0 || nextIndex >= this.steps.length) return;
-            
+
             if (direction < 0) {
                 while (nextIndex >= 0 && this.isLoadingStep(this.steps.eq(nextIndex))) {
                     nextIndex += direction;
                 }
                 if (nextIndex < 0) return;
             }
-            
+
             if (direction > 0) {
                 this.hasAttemptedNext = true;
                 if (!this.validateCurrentStep()) return;
-                
+
                 if (!skipLoadingCheck) {
                     const nextStep = this.steps.eq(nextIndex);
                     if (this.isLoadingStep(nextStep)) {
@@ -232,7 +234,7 @@ class WebflowMultistepForm {
                 'role': 'tabpanel',
                 'aria-hidden': 'true'
             });
-            
+
             // Set up initial step
             this.steps.eq(this.currentStepIndex).attr({
                 'aria-hidden': 'false',
@@ -267,7 +269,7 @@ class WebflowMultistepForm {
         try {
             // Find the first focusable element
             const focusable = targetStep.find('button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])').first();
-            
+
             if (focusable.length) {
                 focusable.focus();
             } else {
@@ -284,7 +286,7 @@ class WebflowMultistepForm {
             const currentStep = this.steps.eq(this.currentStepIndex);
             const stepHeading = currentStep.find('h2').text() || `Step ${this.currentStepIndex + 1}`;
             const announcement = `${stepHeading}. ${this.getRealStepIndex() + 1} of ${this.getRealStepCount()} steps.`;
-            
+
             this.liveRegion.text(announcement);
         } catch (error) {
             console.error('Error in announceStepChange:', error);
@@ -513,10 +515,10 @@ class WebflowMultistepForm {
                 .attr('aria-hidden', isFirstStep);
             
             // Next/Submit button
-            const nextButton = currentStep.find(this.options.nextButtonSelector);
+            const nextButton = currentStep.find(`${this.options.nextButtonSelector}, ${this.options.submitButtonSelector}`);
             nextButton.each((_, button) => {
                 const $button = $(button);
-                const isSubmitButton = $button.attr('type') === 'submit';
+                const isSubmitButton = $button.is(this.options.submitButtonSelector);
                 
                 if (isSubmitButton) {
                     $button.toggle(isLastStep)
@@ -587,6 +589,7 @@ class WebflowMultistepForm {
     }
 }
 
+// Utility function for debouncing
 function debounce(func, wait) {
     let timeout;
     return function executedFunction(...args) {

@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Webflow Multistep Form Example</title>
-    
+
     <style>
         /* Basic styling for demonstration */
         body {
@@ -165,37 +165,37 @@
 </head>
 <body>
     <div class="form-container">
-        <!-- Form using the configurable class names -->
-        <form id="wf-form-Contact-Form">
+        <!-- Form using the new data attributes -->
+        <form data-multistep-form="form">
             <!-- Progress Bar -->
             <div class="progress-container">
-                <div class="form_progress-bar"></div>
+                <div data-multistep-form="progress-bar" class="form_progress-bar"></div>
             </div>
-            <div class="step-counter">Step 1 of 4</div>
+            <div data-multistep-form="step-counter" class="step-counter">Step 1 of 4</div>
 
             <!-- Step 1: Basic Info -->
-            <div class="contact-form_step">
-                <h2>Personal Information</h2>
-                
-                <div class="field-wrapper">
+            <div data-multistep-form="step" class="contact-form_step">
+                <h2>Basic Information</h2>
+
+                <div data-multistep-form="field-wrapper" class="field-wrapper">
                     <label for="fullname">Full Name</label>
                     <input type="text" id="fullname" name="fullname" required>
-                    <div class="w-form-error">Please enter your full name</div>
+                    <div data-multistep-form="field-error" class="w-form-error">Please enter your full name</div>
                 </div>
 
-                <div class="field-wrapper">
+                <div data-multistep-form="field-wrapper" class="field-wrapper">
                     <label for="email">Email Address</label>
                     <input type="email" id="email" name="email" required>
-                    <div class="w-form-error">Please enter a valid email address</div>
+                    <div data-multistep-form="field-error" class="w-form-error">Please enter a valid email address</div>
                 </div>
 
                 <div class="button-wrapper">
-                    <button type="button" class="form_button-next">Next</button>
+                    <button type="button" data-multistep-form="next" class="form_button-next">Next</button>
                 </div>
             </div>
 
-            <!-- Loading Step Example -->
-            <div class="contact-form_step loading-step">
+            <!-- Loading Step -->
+            <div data-multistep-form="step" class="contact-form_step loading-step">
                 <div class="loading-spinner">
                     <div class="spinner-border" role="status">
                         <span class="visually-hidden">Loading...</span>
@@ -204,10 +204,10 @@
             </div>
 
             <!-- Step 2: Auto-advance Radio Step -->
-            <div class="contact-form_step">
+            <div data-multistep-form="step" class="contact-form_step">
                 <h2>Contact Preference</h2>
-                
-                <div class="field-wrapper">
+
+                <div data-multistep-form="field-wrapper" class="field-wrapper">
                     <label>How would you like us to contact you?</label>
                     <div class="radio-group">
                         <div class="radio-wrapper">
@@ -219,50 +219,50 @@
                             <label for="contact-phone">By Phone</label>
                         </div>
                     </div>
-                    <div class="w-form-error">Please select a contact preference</div>
+                    <div data-multistep-form="field-error" class="w-form-error">Please select a contact preference</div>
                 </div>
 
+                <!-- No next button since it's auto-advancing -->
                 <div class="button-wrapper">
-                    <button type="button" class="form_button-prev">Previous</button>
-                    <button type="button" class="form_button-next">Next</button>
+                    <button type="button" data-multistep-form="prev" class="form_button-prev">Previous</button>
                 </div>
             </div>
 
             <!-- Step 3: Contact Details -->
-            <div class="contact-form_step">
+            <div data-multistep-form="step" class="contact-form_step">
                 <h2>Contact Details</h2>
-                
-                <div class="field-wrapper">
+
+                <div data-multistep-form="field-wrapper" class="field-wrapper">
                     <label for="phone">Phone Number</label>
                     <input type="text" id="phone" name="phone" required>
-                    <div class="w-form-error">Please enter your phone number</div>
+                    <div data-multistep-form="field-error" class="w-form-error">Please enter your phone number</div>
                 </div>
 
-                <div class="field-wrapper">
+                <div data-multistep-form="field-wrapper" class="field-wrapper">
                     <label for="address">Address</label>
                     <input type="text" id="address" name="address" required>
-                    <div class="w-form-error">Please enter your address</div>
+                    <div data-multistep-form="field-error" class="w-form-error">Please enter your address</div>
                 </div>
 
                 <div class="button-wrapper">
-                    <button type="button" class="form_button-prev">Previous</button>
-                    <button type="button" class="form_button-next">Next</button>
+                    <button type="button" data-multistep-form="prev" class="form_button-prev">Previous</button>
+                    <button type="button" data-multistep-form="next" class="form_button-next">Next</button>
                 </div>
             </div>
 
             <!-- Step 4: Final Step -->
-            <div class="contact-form_step">
+            <div data-multistep-form="step" class="contact-form_step">
                 <h2>Confirmation</h2>
-                
-                <div class="field-wrapper">
+
+                <div data-multistep-form="field-wrapper" class="field-wrapper">
                     <div class="checkbox-wrapper">
                         <input type="checkbox" id="terms" name="terms" required>
                         <label for="terms">I agree to the terms and conditions</label>
                     </div>
-                    <div class="w-form-error">You must agree to the terms</div>
+                    <div data-multistep-form="field-error" class="w-form-error">You must agree to the terms</div>
                 </div>
 
-                <div class="field-wrapper">
+                <div data-multistep-form="field-wrapper" class="field-wrapper">
                     <div class="checkbox-wrapper">
                         <input type="checkbox" id="newsletter" name="newsletter">
                         <label for="newsletter">Subscribe to newsletter</label>
@@ -270,8 +270,8 @@
                 </div>
 
                 <div class="button-wrapper">
-                    <button type="button" class="form_button-prev">Previous</button>
-                    <button type="submit" class="form_button-next">Submit</button>
+                    <button type="button" data-multistep-form="prev" class="form_button-prev">Previous</button>
+                    <button type="submit" data-multistep-form="submit" class="form_button-next">Submit</button>
                 </div>
             </div>
         </form>
@@ -281,21 +281,9 @@
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="ab-multistep-form.js"></script>
     <script>
-        $(document).ready(() => {
-            const contactForm = new WebflowMultistepForm({
-                formSelector: '#wf-form-Contact-Form',
-                stepSelector: '.contact-form_step',
-                progressBarSelector: '.form_progress-bar',
-                nextButtonSelector: '.form_button-next',
-                prevButtonSelector: '.form_button-prev',
-                stepCounterSelector: '.step-counter',
-                stepCounterTemplate: 'Step {current} of {total}',
-                autoAdvanceDelay: 500,
-                loadingStepClass: 'loading-step',
-                loadingDelay: 1000,
-                navigateStepsFadeOutTimeout: 500,
-                navigateStepsFadeInTimeout: 500
-            });
+        // Initialize the multistep form
+        $(document).ready(function() {
+            new WebflowMultistepForm();
         });
     </script>
 </body>
