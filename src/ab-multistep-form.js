@@ -1,5 +1,7 @@
 class WebflowMultistepForm {
     constructor(options = {}) {
+        console.log('WebflowMultistepForm script loaded');
+
         // Default selectors and configuration using data attributes
         this.options = {
             // Form elements
@@ -48,12 +50,17 @@ class WebflowMultistepForm {
             // Core elements - now using configured selectors
             this.form = $(this.options.formSelector);
             if (this.form.length === 0) throw new Error(`Form not found: ${this.options.formSelector}`);
+            console.log('Form found:', this.form);
 
             this.steps = this.form.find(this.options.stepSelector);
             if (this.steps.length === 0) throw new Error(`No steps found: ${this.options.stepSelector}`);
+            console.log('Number of form steps:', this.steps.length);
 
             this.progressBar = this.form.find(this.options.progressBarSelector);
+            console.log('Progress bar found:', this.progressBar.length > 0);
+
             this.stepCounter = this.form.find(this.options.stepCounterSelector);
+            console.log('Step counter found:', this.stepCounter.length > 0);
 
             // Initialize components
             this.initForm();
@@ -70,6 +77,8 @@ class WebflowMultistepForm {
 
             // Restore form state if available
             this.restoreState();
+
+            console.log('WebflowMultistepForm initialization complete');
         } catch (error) {
             console.error('Error initializing form:', error);
             this.handleError(error);
@@ -77,33 +86,42 @@ class WebflowMultistepForm {
     }
 
     initForm() {
+        console.log('Initializing form');
         try {
             this.form.prop('novalidate', true);
+            console.log('Form set to novalidate');
             
             // Hide all steps except first using JavaScript
             this.steps.each((index, step) => {
                 const $step = $(step);
                 if (index === 0) {
                     $step.css('display', 'block');
+                    console.log('First step displayed');
                 } else {
                     $step.css('display', 'none');
+                    console.log(`Step ${index + 1} hidden`);
                 }
             });
 
             this.updateDisplay();
+            console.log('Display updated');
 
             // Initialize auto-advance steps
+            let autoAdvanceStepsCount = 0;
             this.steps.each((index, step) => {
                 const $step = $(step);
                 const hasOnlyRadios = this.isRadioOnlyStep($step);
                 if (hasOnlyRadios) {
                     $step.addClass(this.options.autoAdvanceStepClass);
+                    autoAdvanceStepsCount++;
                     const nextButton = $step.find(this.options.nextButtonSelector);
                     if (!nextButton.is('[type="submit"]')) {
                         nextButton.hide();
+                        console.log(`Next button hidden for auto-advance step ${index + 1}`);
                     }
                 }
             });
+            console.log('Auto-advance steps initialized:', autoAdvanceStepsCount);
         } catch (error) {
             console.error('Error in initForm:', error);
             this.handleError(error);
@@ -614,3 +632,8 @@ function debounce(func, wait) {
         timeout = setTimeout(later, wait);
     };
 }
+
+console.log('WebflowMultistepForm class defined');
+
+// Export the class as default
+export default WebflowMultistepForm;
