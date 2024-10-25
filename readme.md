@@ -3,6 +3,22 @@
 A lightweight JavaScript library for creating interactive multi-step forms with progress tracking, validation, smooth transitions, and enhanced accessibility. Since it's intended for use in Webflow, it requires jQuery and utilizes data attributes for flexible implementation.
 
 
+## Table of Contents
+- [Features](#features)
+- [Usage](#usage)
+- [Configuration Options](#configuration-options)
+- [Accessibility](#accessibility)
+- [State Management](#state-management)
+- [Error Handling](#error-handling)
+- [Auto-Advancing Steps](#auto-advancing-steps)
+- [Development](#development)
+- [Build](#build)
+- [Deployment](#deployment)
+- [Example](#example)
+- [Dependencies](#dependencies)
+- [License](#license)
+
+
 ## Features
 
 - Multi-step form navigation
