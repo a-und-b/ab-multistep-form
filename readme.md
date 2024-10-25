@@ -1,5 +1,6 @@
 # a&b Multistep Form
-A lightweight JavaScript library for creating interactive multi-step forms in Webflow with progress tracking, validation, smooth transitions, and enhanced accessibility.
+
+A lightweight JavaScript library for creating interactive multi-step forms with progress tracking, validation, smooth transitions, and enhanced accessibility. Since it's intended for use in Webflow, it requires jQuery and utilizes data attributes for flexible implementation.
 
 
 ## Features
@@ -14,13 +15,37 @@ A lightweight JavaScript library for creating interactive multi-step forms in We
 - State management with form data persistence
 - Accessibility enhancements (ARIA attributes, live regions)
 - FTP deployment support
+- Browser history management
+- Debounced validation
+- Error announcements for screen readers
+- Customizable loading steps
 
-## To Do:
-- Use data attributes instead of classes for more flexibility
 
 ## Usage
 
-Include the `ab-multistep-form.js` script in your project and initialize the multi-step form with your desired configuration.
+Include the `ab-multistep-form.min.js` script in your project and initialize the multi-step form with your desired configuration.
+
+### HTML Structure
+
+Ensure your HTML follows this basic structure:
+
+```html
+<form data-multistep-form="form">
+<div data-multistep-form="progress-bar"></div>
+<div data-multistep-form="step-counter"></div>
+<div data-multistep-form="step">
+<!-- Step 1 content -->
+</div>
+<div data-multistep-form="step">
+<!-- Step 2 content -->
+</div>
+<!-- More steps as needed -->
+<button type="button" data-multistep-form="prev">Previous</button>
+<button type="button" data-multistep-form="next">Next</button>
+<button type="submit" data-multistep-form="submit">Submit</button>
+</form>
+```
+
 
 ### JavaScript Initialization
 
@@ -113,8 +138,16 @@ Form data and the current step are saved to `localStorage`, allowing users to re
 
 ### Error Handling
 
-Validation errors are displayed next to the relevant form fields, and messages are announced via ARIA live regions for users using assistive technologies.
+## Error Handling
 
+The library includes built-in error handling:
+
+- Form-wide errors are displayed at the top of the form.
+- Field-specific errors are shown next to the relevant form fields.
+- Errors are announced to screen readers using ARIA live regions.
+- Console errors are logged for debugging purposes.
+
+You can customize error messages and styling by modifying the relevant CSS classes and error message templates in the configuration options.
 ### Auto-Advancing Steps
 
 Steps containing only radio buttons will auto-advance when a selection is made. To enable this, ensure the step contains only radio inputs.
