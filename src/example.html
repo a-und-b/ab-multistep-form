@@ -94,6 +94,7 @@
             display: flex;
             gap: 10px;
             margin-top: 30px;
+            justify-content: flex-end;
         }
 
         .form_button-next,
@@ -169,64 +170,58 @@
             </div>
             <div data-multistep-form="step-counter" class="step-counter">Step 1 of 4</div>
 
-            <!-- Step 1: Basic Info -->
-            <div data-multistep-form="step" class="contact-form_step">
-                <h2>Basic Information</h2>
+            <!-- Steps Container -->
+            <div class="steps-container">
+                <!-- Step 1: Basic Info -->
+                <div data-multistep-form="step" class="contact-form_step">
+                    <h2>Basic Information</h2>
 
-                <div data-multistep-form="field-wrapper" class="field-wrapper">
-                    <label for="fullname">Full Name</label>
-                    <input type="text" id="fullname" name="fullname" required>
-                    <div data-multistep-form="field-error" class="w-form-error">Please enter your full name</div>
-                </div>
+                    <div data-multistep-form="field-wrapper" class="field-wrapper">
+                        <label for="fullname">Full Name</label>
+                        <input type="text" id="fullname" name="fullname" required>
+                        <div data-multistep-form="field-error" class="w-form-error">Please enter your full name</div>
+                    </div>
 
-                <div data-multistep-form="field-wrapper" class="field-wrapper">
-                    <label for="email">Email Address</label>
-                    <input type="email" id="email" name="email" required>
-                    <div data-multistep-form="field-error" class="w-form-error">Please enter a valid email address</div>
-                </div>
-
-                <div class="button-wrapper">
-                    <button type="button" data-multistep-form="next" class="form_button-next">Next</button>
-                </div>
-            </div>
-
-            <!-- Loading Step -->
-            <div data-multistep-form="step" class="contact-form_step loading-step">
-                <div class="loading-spinner">
-                    <div class="spinner-border" role="status">
-                        <span class="visually-hidden">Loading...</span>
+                    <div data-multistep-form="field-wrapper" class="field-wrapper">
+                        <label for="email">Email Address</label>
+                        <input type="email" id="email" name="email" required>
+                        <div data-multistep-form="field-error" class="w-form-error">Please enter a valid email address</div>
                     </div>
                 </div>
-            </div>
 
-            <!-- Step 2: Auto-advance Radio Step -->
-            <div data-multistep-form="step" class="contact-form_step">
-                <h2>Contact Preference</h2>
+                <!-- Step 2: Auto-advance Radio Step -->
+                <div data-multistep-form="step" class="contact-form_step">
+                    <h2>Contact Preference</h2>
 
-                <div data-multistep-form="field-wrapper" class="field-wrapper">
-                    <label>How would you like us to contact you?</label>
-                    <div class="radio-group">
-                        <div class="radio-wrapper">
-                            <input type="radio" id="contact-email" name="contact-preference" value="email" required>
-                            <label for="contact-email">By Email</label>
+                    <div data-multistep-form="field-wrapper" class="field-wrapper">
+                        <label>How would you like us to contact you?</label>
+                        <div class="radio-group">
+                            <div class="radio-wrapper">
+                                <input type="radio" id="contact-email" name="contact-preference" value="email" required>
+                                <label for="contact-email">By Email</label>
+                            </div>
+                            <div class="radio-wrapper">
+                                <input type="radio" id="contact-phone" name="contact-preference" value="phone" required>
+                                <label for="contact-phone">By Phone</label>
+                            </div>
                         </div>
-                        <div class="radio-wrapper">
-                            <input type="radio" id="contact-phone" name="contact-preference" value="phone" required>
-                            <label for="contact-phone">By Phone</label>
+                        <div data-multistep-form="field-error" class="w-form-error">Please select a contact preference</div>
+                    </div>
+                </div>
+
+                    <!-- Loading Step -->
+                <div data-multistep-form="step" class="contact-form_step loading-step">
+                    <div class="loading-spinner">
+                        <div class="spinner-border" role="status">
+                            <span class="visually-hidden">Loading...</span>
                         </div>
                     </div>
-                    <div data-multistep-form="field-error" class="w-form-error">Please select a contact preference</div>
                 </div>
 
-                <!-- No next button since it's auto-advancing -->
-                <div class="button-wrapper">
-                    <button type="button" data-multistep-form="prev" class="form_button-prev">Previous</button>
-                </div>
-            </div>
 
-            <!-- Step 3: Contact Details -->
-            <div data-multistep-form="step" class="contact-form_step">
-                <h2>Contact Details</h2>
+                <!-- Step 3: Contact Details -->
+                <div data-multistep-form="step" class="contact-form_step">
+                    <h2>Contact Details</h2>
 
                 <div data-multistep-form="field-wrapper" class="field-wrapper">
                     <label for="phone">Phone Number</label>
@@ -234,41 +229,39 @@
                     <div data-multistep-form="field-error" class="w-form-error">Please enter your phone number</div>
                 </div>
 
-                <div data-multistep-form="field-wrapper" class="field-wrapper">
-                    <label for="address">Address</label>
-                    <input type="text" id="address" name="address" required>
-                    <div data-multistep-form="field-error" class="w-form-error">Please enter your address</div>
+                    <div data-multistep-form="field-wrapper" class="field-wrapper">
+                        <label for="address">Address</label>
+                        <input type="text" id="address" name="address" required>
+                        <div data-multistep-form="field-error" class="w-form-error">Please enter your address</div>
+                    </div>
                 </div>
 
-                <div class="button-wrapper">
-                    <button type="button" data-multistep-form="prev" class="form_button-prev">Previous</button>
-                    <button type="button" data-multistep-form="next" class="form_button-next">Next</button>
+                <!-- Step 4: Final Step -->
+                <div data-multistep-form="step" class="contact-form_step">
+                    <h2>Confirmation</h2>
+
+                    <div data-multistep-form="field-wrapper" class="field-wrapper">
+                        <div class="checkbox-wrapper">
+                            <input type="checkbox" id="terms" name="terms" required>
+                            <label for="terms">I agree to the terms and conditions</label>
+                        </div>
+                        <div data-multistep-form="field-error" class="w-form-error">You must agree to the terms</div>
+                    </div>
+
+                    <div data-multistep-form="field-wrapper" class="field-wrapper">
+                        <div class="checkbox-wrapper">
+                            <input type="checkbox" id="newsletter" name="newsletter">
+                            <label for="newsletter">Subscribe to newsletter</label>
+                        </div>
+                    </div>
                 </div>
             </div>
 
-            <!-- Step 4: Final Step -->
-            <div data-multistep-form="step" class="contact-form_step">
-                <h2>Confirmation</h2>
-
-                <div data-multistep-form="field-wrapper" class="field-wrapper">
-                    <div class="checkbox-wrapper">
-                        <input type="checkbox" id="terms" name="terms" required>
-                        <label for="terms">I agree to the terms and conditions</label>
-                    </div>
-                    <div data-multistep-form="field-error" class="w-form-error">You must agree to the terms</div>
-                </div>
-
-                <div data-multistep-form="field-wrapper" class="field-wrapper">
-                    <div class="checkbox-wrapper">
-                        <input type="checkbox" id="newsletter" name="newsletter">
-                        <label for="newsletter">Subscribe to newsletter</label>
-                    </div>
-                </div>
-
-                <div class="button-wrapper">
-                    <button type="button" data-multistep-form="prev" class="form_button-prev">Previous</button>
-                    <button type="submit" data-multistep-form="submit" class="form_button-next">Submit</button>
-                </div>
+            <!-- Buttons for navigation -->
+            <div class="button-wrapper">
+                <button type="button" data-multistep-form="prev" class="form_button-prev">Previous</button>
+                <button type="button" data-multistep-form="next" class="form_button-next">Next</button>
+                <button type="submit" data-multistep-form="submit" class="form_button-next">Submit</button>
             </div>
         </form>
     </div>
@@ -323,7 +316,6 @@
                 }
             }
         })();
-        </script>
-    
+    </script>
 </body>
 </html>

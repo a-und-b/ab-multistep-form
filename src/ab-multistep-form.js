@@ -46,6 +46,9 @@ class WebflowMultistepForm {
         // Initialize currentStepIndex
         this.currentStepIndex = 0;
 
+        // Flag to track if user attempted to move to the next step for validation and navigation logic
+        this.hasAttemptedNext = false;
+
         try {
             // Core elements - now using configured selectors
             this.form = $(this.options.formSelector);
@@ -94,7 +97,7 @@ class WebflowMultistepForm {
             this.form.prop('novalidate', true);
             console.log('Form set to novalidate');
             
-            // Hide all steps except first using JavaScript
+            // Hide all steps except the first
             this.steps.each((index, step) => {
                 const $step = $(step);
                 if (index === 0) {
@@ -139,7 +142,7 @@ class WebflowMultistepForm {
             }
         });
 
-        // Handle beforeunload
+        // Add event listener to handle the beforeunload event, which triggers when the user is about to leave the page
         window.addEventListener('beforeunload', () => {
             this.saveState();
         });
@@ -182,7 +185,7 @@ class WebflowMultistepForm {
 
     initEvents() {
         try {
-            // Navigation buttons
+            // Initialize next/prev navigation buttons
             this.form.on('click', `${this.options.nextButtonSelector}, ${this.options.prevButtonSelector}`, (e) => {
                 e.preventDefault();
                 const button = $(e.currentTarget);
@@ -190,7 +193,7 @@ class WebflowMultistepForm {
                 this.navigateSteps(direction);
             });
 
-            // Auto-advance radio handling with corrected selector
+            // Auto-advance radio handling
             this.form.on('change', `.${this.options.autoAdvanceStepClass} input[type="radio"]`, (e) => {
                 const radio = $(e.target);
                 if (radio.is(':checked')) {
@@ -243,8 +246,11 @@ class WebflowMultistepForm {
             }
 
             if (direction > 0) {
+                // Set the flag when attempting to go to the next step
                 this.hasAttemptedNext = true;
                 if (!this.validateCurrentStep()) return;
+                // Reset the flag after successful validation
+                this.hasAttemptedNext = false;
 
                 if (!skipLoadingCheck) {
                     const nextStep = this.steps.eq(nextIndex);
@@ -452,7 +458,6 @@ class WebflowMultistepForm {
                     if (!isChecked) {
                         if (this.hasAttemptedNext) {
                             this.showError(field);
-                            this.announceError(field);
                         }
                         isValid = false;
                     } else {
@@ -463,7 +468,6 @@ class WebflowMultistepForm {
                     if (!value || (field.attr('type') === 'checkbox' && !field.is(':checked'))) {
                         if (this.hasAttemptedNext) {
                             this.showError(field);
-                            this.announceError(field);
                         }
                         isValid = false;
                     } else {
@@ -539,34 +543,43 @@ class WebflowMultistepForm {
                 .replace('{total}', realStepCount);
             this.stepCounter.text(counterText);
             
-            // Update button visibility and ARIA states
+            // Update button visibility
             const isFirstStep = this.currentStepIndex === 0;
             const isLastStep = this.currentStepIndex === this.steps.length - 1;
             const currentStep = this.steps.eq(this.currentStepIndex);
             
-            // Update ARIA states for all steps
-            this.steps.attr('aria-hidden', 'true').attr('tabindex', '-1');
-            currentStep.attr('aria-hidden', 'false').attr('tabindex', '0');
-            
-            // Previous button
-            const prevButton = currentStep.find(this.options.prevButtonSelector);
-            prevButton.toggle(!isFirstStep)
-                .attr('aria-hidden', isFirstStep);
-            
-            // Next/Submit button
-            const nextButton = currentStep.find(`${this.options.nextButtonSelector}, ${this.options.submitButtonSelector}`);
-            nextButton.each((_, button) => {
-                const $button = $(button);
-                const isSubmitButton = $button.is(this.options.submitButtonSelector);
-                
-                if (isSubmitButton) {
-                    $button.toggle(isLastStep)
-                        .attr('aria-hidden', !isLastStep);
+            // First hide all buttons
+            this.form.find([
+                this.options.prevButtonSelector,
+                this.options.nextButtonSelector, 
+                this.options.submitButtonSelector
+            ].join(',')).hide();
+
+            // Show appropriate buttons based on step type
+            if (this.isLoadingStep(currentStep)) {
+                // Don't show any buttons for loading steps
+                return;
+            }
+
+            // Show appropriate navigation buttons
+            if (!isFirstStep) {
+                this.form.find(this.options.prevButtonSelector)
+                    .show()
+                    .attr('aria-hidden', 'false');
+            }
+
+            // For non-auto-advance steps, show next/submit button
+            if (!this.isRadioOnlyStep(currentStep)) {
+                if (isLastStep) {
+                    this.form.find(this.options.submitButtonSelector)
+                        .show()
+                        .attr('aria-hidden', 'false');
                 } else {
-                    $button.toggle(!isLastStep && !this.isLoadingStep(currentStep))
-                        .attr('aria-hidden', isLastStep || this.isLoadingStep(currentStep));
+                    this.form.find(this.options.nextButtonSelector)
+                        .show()
+                        .attr('aria-hidden', 'false');
                 }
-            });
+            }
         } catch (error) {
             console.error('Error in updateDisplay:', error);
             this.handleError(error);
