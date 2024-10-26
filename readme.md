@@ -47,18 +47,18 @@ Ensure your HTML follows this basic structure:
 
 ```html
 <form data-multistep-form="form">
-<div data-multistep-form="progress-bar"></div>
-<div data-multistep-form="step-counter"></div>
-<div data-multistep-form="step">
-<!-- Step 1 content -->
-</div>
-<div data-multistep-form="step">
-<!-- Step 2 content -->
-</div>
-<!-- More steps as needed -->
-<button type="button" data-multistep-form="prev">Previous</button>
-<button type="button" data-multistep-form="next">Next</button>
-<button type="submit" data-multistep-form="submit">Submit</button>
+    <div data-multistep-form="progress-bar"></div>
+    <div data-multistep-form="step-counter"></div>
+    <div data-multistep-form="step">
+        <!-- Step 1 content -->
+    </div>
+    <div data-multistep-form="step">
+        <!-- Step 2 content -->
+    </div>
+        <!-- More steps as needed -->
+    <button type="button" data-multistep-form="prev">Previous</button>
+    <button type="button" data-multistep-form="next">Next</button>
+    <button type="submit" data-multistep-form="submit">Submit</button>
 </form>
 ```
 
@@ -69,7 +69,7 @@ Initialize the multi-step form with optional custom configurations:
 
 ```javascript
 const multiStepForm = new WebflowMultistepForm({
-// Custom configurations (options are optional)
+    // Custom configurations (options are optional)
 });
 ```
 If you are using the default data attribute selectors, you can initialize the form without passing any options.
@@ -172,7 +172,7 @@ Steps containing only radio buttons will auto-advance when a selection is made. 
 
 1. Clone the repository:
    ```bash
-   git clone https://github.com/yourusername/ab-multistep-form.git
+   git clone https://github.com/a-und-b/ab-multistep-form.git
    ```
 2. Install dependencies:
    ```bash
