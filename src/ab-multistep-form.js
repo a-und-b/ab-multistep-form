@@ -1,4 +1,31 @@
+/**
+ * A class that handles multi-step form functionality for Webflow forms.
+ */
 class WebflowMultistepForm {
+    /**
+     * Creates a new WebflowMultistepForm instance.
+     * @param {Object} options - Configuration options for the form
+     * @param {string} [options.formSelector='[data-multistep-form="form"]'] - Selector for the form element
+     * @param {string} [options.stepSelector='[data-multistep-form="step"]'] - Selector for individual form steps
+     * @param {string} [options.progressBarSelector='[data-multistep-form="progress-bar"]'] - Selector for progress bar
+     * @param {string} [options.stepCounterSelector='[data-multistep-form="step-counter"]'] - Selector for step counter
+     * @param {string} [options.nextButtonSelector='[data-multistep-form="next"]'] - Selector for next button
+     * @param {string} [options.prevButtonSelector='[data-multistep-form="prev"]'] - Selector for previous button
+     * @param {string} [options.submitButtonSelector='[data-multistep-form="submit"]'] - Selector for submit button
+     * @param {string} [options.formFieldErrorClass='[data-multistep-form="field-error"]'] - Class for field error messages
+     * @param {string} [options.fieldWrapperSelector='[data-multistep-form="field-wrapper"]'] - Selector for field wrappers
+     * @param {string} [options.inputErrorClass='error'] - Class added to inputs with errors
+     * @param {string} [options.autoAdvanceStepClass='auto-advance-step'] - Class for steps that auto-advance
+     * @param {number} [options.navigateStepsFadeOutTimeout=150] - Timeout for step fade out animation
+     * @param {number} [options.navigateStepsFadeInTimeout=150] - Timeout for step fade in animation
+     * @param {number} [options.autoAdvanceDelay=500] - Delay before auto-advancing to next step
+     * @param {string} [options.progressBarActiveClass='active'] - Class for active progress bar state
+     * @param {string} [options.stepActiveClass='active'] - Class for active step
+     * @param {string} [options.stepCounterTemplate='Step {current} of {total}'] - Template for step counter text
+     * @param {string} [options.loadingStepClass='loading-step'] - Class for loading steps
+     * @param {number} [options.loadingDelay=2000] - Delay for loading steps
+     * @param {string} [options.loadingTemplate='<div class="loading-spinner">Loading...</div>'] - Template for loading indicator
+     */
     constructor(options = {}) {
         console.log('WebflowMultistepForm script loaded');
 
@@ -91,6 +118,10 @@ class WebflowMultistepForm {
         }
     }
 
+    /**
+     * Initializes the form by setting up initial state and auto-advance steps.
+     * @private
+     */
     initForm() {
         console.log('Initializing form');
         try {
@@ -134,6 +165,10 @@ class WebflowMultistepForm {
         }
     }
 
+    /**
+     * Sets up state management for browser navigation and form auto-saving.
+     * @private
+     */
     setupStateManagement() {
         // Handle browser navigation
         window.addEventListener('popstate', (event) => {
@@ -153,6 +188,12 @@ class WebflowMultistepForm {
         }, 500));
     }
 
+    /**
+     * Navigates to a specific step in the form.
+     * @param {number} stepIndex - The index of the step to navigate to
+     * @param {boolean} [skipPushState=false] - Whether to skip pushing state to browser history
+     * @private
+     */
     navigateToStep(stepIndex, skipPushState = false) {
         try {
             if (stepIndex < 0 || stepIndex >= this.steps.length) return;
@@ -183,6 +224,10 @@ class WebflowMultistepForm {
         }
     }
 
+    /**
+     * Initializes event handlers for form navigation and validation.
+     * @private
+     */
     initEvents() {
         try {
             // Initialize next/prev navigation buttons
@@ -232,6 +277,12 @@ class WebflowMultistepForm {
         }
     }
 
+    /**
+     * Navigates form steps in the specified direction.
+     * @param {number} direction - Direction to navigate (1 for forward, -1 for backward)
+     * @param {boolean} [skipLoadingCheck=false] - Whether to skip loading step checks
+     * @private
+     */
     navigateSteps(direction, skipLoadingCheck = false) {
         try {
             let nextIndex = this.currentStepIndex + direction;
@@ -267,6 +318,10 @@ class WebflowMultistepForm {
         }
     }
 
+    /**
+     * Initializes accessibility features for the form.
+     * @private
+     */
     initAccessibility() {
         try {
             // Set up ARIA attributes for steps
@@ -305,6 +360,11 @@ class WebflowMultistepForm {
         }
     }
 
+    /**
+     * Manages focus when navigating between steps.
+     * @param {jQuery} targetStep - The step to set focus on
+     * @private
+     */
     manageFocus(targetStep) {
         try {
             // Find the first focusable element
@@ -321,6 +381,10 @@ class WebflowMultistepForm {
         }
     }
 
+    /**
+     * Announces step changes to screen readers.
+     * @private
+     */
     announceStepChange() {
         try {
             const currentStep = this.steps.eq(this.currentStepIndex);
@@ -334,6 +398,10 @@ class WebflowMultistepForm {
         }
     }
 
+    /**
+     * Saves the current form state to localStorage.
+     * @private
+     */
     saveState() {
         try {
             if (!this.form || !this.form[0] || !(this.form[0] instanceof HTMLFormElement)) {
@@ -355,6 +423,10 @@ class WebflowMultistepForm {
         }
     }
 
+    /**
+     * Restores the form state from localStorage.
+     * @private
+     */
     restoreState() {
         try {
             const savedState = localStorage.getItem('form-state');
@@ -393,6 +465,11 @@ class WebflowMultistepForm {
         }
     }
 
+    /**
+     * Handles and displays errors to users.
+     * @param {Error} error - The error to handle
+     * @private
+     */
     handleError(error) {
         // Show error message to user
         const errorMessage = $('<div>', {
@@ -409,6 +486,12 @@ class WebflowMultistepForm {
         console.error('Form error:', error);
     }
 
+    /**
+     * Handles loading steps with delay and animation.
+     * @param {number} nextIndex - Index of the loading step
+     * @returns {Promise<boolean>} Promise that resolves when loading is complete
+     * @private
+     */
     handleLoadingStep(nextIndex) {
         try {
             const nextStep = this.steps.eq(nextIndex);
@@ -443,6 +526,11 @@ class WebflowMultistepForm {
         }
     }
 
+    /**
+     * Validates the current form step.
+     * @returns {boolean} Whether the current step is valid
+     * @private
+     */
     validateCurrentStep() {
         try {
             const currentStep = this.steps.eq(this.currentStepIndex);
@@ -484,6 +572,11 @@ class WebflowMultistepForm {
         }
     }
 
+    /**
+     * Announces field errors to screen readers.
+     * @param {jQuery} field - The field with the error
+     * @private
+     */
     announceError(field) {
         const errorMessage = field.closest(this.options.fieldWrapperSelector)
             .find(this.options.formFieldErrorClass)
@@ -492,6 +585,11 @@ class WebflowMultistepForm {
         this.liveRegion.text(errorMessage);
     }
 
+    /**
+     * Shows error state for a field.
+     * @param {jQuery} field - The field to show error for
+     * @private
+     */
     showError(field) {
         try {
             const wrapper = field.closest(this.options.fieldWrapperSelector);
@@ -509,6 +607,11 @@ class WebflowMultistepForm {
         }
     }
 
+    /**
+     * Hides error state for a field.
+     * @param {jQuery} field - The field to hide error for
+     * @private
+     */
     hideError(field) {
         try {
             const wrapper = field.closest(this.options.fieldWrapperSelector);
@@ -526,6 +629,10 @@ class WebflowMultistepForm {
         }
     }
 
+    /**
+     * Updates the display of form navigation elements.
+     * @private
+     */
     updateDisplay() {
         try {
             // Get real step counts (excluding loading steps)
@@ -586,6 +693,12 @@ class WebflowMultistepForm {
         }
     }
 
+    /**
+     * Checks if a step contains only radio inputs.
+     * @param {jQuery} $step - The step to check
+     * @returns {boolean} Whether the step contains only radio inputs
+     * @private
+     */
     isRadioOnlyStep($step) {
         try {
             const inputs = $step.find('input:not([type="hidden"])');
@@ -598,6 +711,11 @@ class WebflowMultistepForm {
         }
     }
 
+    /**
+     * Gets the count of non-loading steps.
+     * @returns {number} The count of real steps
+     * @private
+     */
     getRealStepCount() {
         try {
             let count = 0;
@@ -614,6 +732,11 @@ class WebflowMultistepForm {
         }
     }
 
+    /**
+     * Gets the index of the current step, excluding loading steps.
+     * @returns {number} The real step index
+     * @private
+     */
     getRealStepIndex() {
         try {
             let realIndex = 0;
@@ -630,6 +753,12 @@ class WebflowMultistepForm {
         }
     }
 
+    /**
+     * Checks if a step is a loading step.
+     * @param {jQuery} $step - The step to check
+     * @returns {boolean} Whether the step is a loading step
+     * @private
+     */
     isLoadingStep($step) {
         try {
             return $step.hasClass(this.options.loadingStepClass);
@@ -641,7 +770,12 @@ class WebflowMultistepForm {
     }
 }
 
-// Utility function for debouncing
+/**
+ * Utility function for debouncing function calls.
+ * @param {Function} func - The function to debounce
+ * @param {number} wait - The debounce wait time in milliseconds
+ * @returns {Function} The debounced function
+ */
 function debounce(func, wait) {
     let timeout;
     return function executedFunction(...args) {
