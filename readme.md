@@ -166,7 +166,29 @@ The library includes built-in error handling:
 You can customize error messages and styling by modifying the relevant CSS classes and error message templates in the configuration options.
 ### Auto-Advancing Steps
 
-Steps containing only radio buttons will auto-advance when a selection is made. To enable this, ensure the step contains only radio inputs.
+Steps containing only radio buttons from a single group will auto-advance when a selection is made. To enable this:
+
+1. Ensure the step contains only radio inputs
+2. All radio inputs must belong to the same group (share the same `name` attribute)
+3. Steps with multiple radio groups will be treated as regular steps with visible next buttons
+
+Example of an auto-advancing step:
+```html
+<div data-multistep-form="step">
+    <!-- This step will auto-advance -->
+    <input type="radio" name="single-group" value="1">
+    <input type="radio" name="single-group" value="2">
+    <input type="radio" name="single-group" value="3">
+</div>
+
+<div data-multistep-form="step">
+    <!-- This step will NOT auto-advance (multiple groups) -->
+    <input type="radio" name="group1" value="1">
+    <input type="radio" name="group1" value="2">
+    <input type="radio" name="group2" value="1">
+    <input type="radio" name="group2" value="2">
+</div>
+```
 
 ## Development
 
