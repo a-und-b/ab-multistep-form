@@ -9,6 +9,11 @@
             --button-secondary: #e0e0e0;
             --progress-bg: #eee;
             --step-counter: #666;
+            --primary-color: #2196F3;
+            --primary-color-light: rgba(33, 150, 243, 0.1);
+            --error-color: #dc3545;
+            --focus-shadow: rgba(33, 150, 243, 0.5);
+            --border-color-hover: #2196F3;
         }
 
         :root[data-theme="dark"] {
@@ -21,9 +26,13 @@
             --button-secondary: #404040;
             --progress-bg: #333;
             --step-counter: #aaa;
+            --primary-color: #2196F3;
+            --primary-color-light: rgba(33, 150, 243, 0.1);
+            --error-color: #dc3545;
+            --focus-shadow: rgba(33, 150, 243, 0.5);
+            --border-color-hover: #2196F3;
         }
 
-        /* Update existing styles */
         body {
             background-color: var(--bg-color);
             color: var(--text-color);
@@ -47,7 +56,6 @@
             color: var(--text-color);
         }
 
-        /* Add theme switcher styles */
         .theme-switch {
             position: fixed;
             bottom: 1.25rem;
@@ -66,7 +74,6 @@
             cursor: pointer;
         }
 
-        /* Basic styling for demonstration */
         body {
             font-family: -apple-system, BlinkMacSystemFont, sans-serif;
             max-width: 37.5rem;
@@ -83,13 +90,13 @@
 
         .progress-container {
             background: var(--progress-bg);
-            height: 0.25rem;
+            height: 0.5rem;
             margin-bottom: 1.875rem;
             border-radius: 0.125rem;
         }
 
         .progress-bar {
-            background: #2196F3;
+            background: var(--primary-color);
             height: 100%;
             width: 0;
             transition: width 0.3s ease;
@@ -99,7 +106,7 @@
         .step-counter {
             font-size: 0.875rem;
             color: var(--step-counter);
-            margin-bottom: 1.25rem;
+            margin-bottom: .5rem;
         }
 
         .field-wrapper {
@@ -124,8 +131,71 @@
         }
 
         .checkbox-wrapper {
+            position: relative;
+            display: block;
+            margin-bottom: 1rem;
+        }
+
+        /* Hide the default checkbox */
+        .checkbox-wrapper input[type="checkbox"] {
+            position: absolute;
+            opacity: 0;
+            width: 100%;
+            height: 100%;
+            cursor: pointer;
+        }
+
+        .checkbox-wrapper label {
             display: flex;
             align-items: center;
+            padding: 1rem;
+            background: var(--input-bg);
+            border: 2px solid var(--input-border);
+            border-radius: 0.5rem;
+            transition: all 0.2s ease;
+            cursor: pointer;
+            margin: 0;
+        }
+
+        /* Custom checkbox indicator */
+        .checkbox-wrapper label::before {
+            content: '';
+            display: inline-block;
+            width: 1.25rem;
+            height: 1.25rem;
+            margin-right: 0.75rem;
+            border: 2px solid var(--input-border);
+            border-radius: 0.25rem;
+            transition: all 0.2s ease;
+        }
+
+        /* Hover state */
+        .checkbox-wrapper:hover label {
+            border-color: var(--border-color-hover);
+        }
+
+        .checkbox-wrapper:hover label::before {
+            border-color: var(--border-color-hover);
+        }
+
+        /* Checked state */
+        .checkbox-wrapper input[type="checkbox"]:checked + label {
+            background: var(--primary-color-light);
+            border-color: var(--primary-color);
+        }
+
+        .checkbox-wrapper input[type="checkbox"]:checked + label::before {
+            background-color: var(--primary-color);
+            border-color: var(--primary-color);
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='white'%3E%3Cpath d='M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41L9 16.17z'/%3E%3C/svg%3E");
+            background-size: 80%;
+            background-position: center;
+            background-repeat: no-repeat;
+        }
+
+        /* Focus state for accessibility */
+        .checkbox-wrapper input[type="checkbox"]:focus + label {
+            box-shadow: 0 0 0 2px var(--focus-shadow);
         }
 
         .radio-group {
@@ -161,16 +231,16 @@
         }
 
         .radio-wrapper:hover label {
-            border-color: #2196F3;
+            border-color: var(--border-color-hover);
         }
 
         .radio-wrapper input[type="radio"]:checked + label {
-            background: rgba(33, 150, 243, 0.1);
-            border-color: #2196F3;
+            background: var(--primary-color-light);
+            border-color: var(--primary-color);
         }
 
         .radio-wrapper input[type="radio"]:focus + label {
-            box-shadow: 0 0 0 2px rgba(33, 150, 243, 0.5);
+            box-shadow: 0 0 0 2px var(--focus-shadow);
         }
 
         .button-wrapper {
@@ -191,7 +261,7 @@
         }
 
         .form_button-next {
-            background: #2196F3;
+            background: var(--primary-color);
             color: white;
         }
 
@@ -210,13 +280,13 @@
 
         .w-form-error {
             display: none;
-            color: #dc3545;
+            color: var(--error-color);
             font-size: 0.875rem;
             margin-top: 0.25rem;
         }
 
         input.error {
-            border-color: #dc3545;
+            border-color: var(--error-color);
         }
 
         .loading-step {
@@ -229,12 +299,12 @@
         }
 
         .spinner-border {
-            width: 3rem;
-            height: 3rem;
-            border: 0.25em solid currentColor;
+            width: 5rem;
+            height: 5rem;
+            border: 0.5em solid var(--primary-color);
             border-right-color: transparent;
             border-radius: 50%;
-            animation: spinner-border .75s linear infinite;
+            animation: spinner-border 1s linear infinite;
         }
 
         @keyframes spinner-border {
@@ -265,8 +335,9 @@
             border: 0;
         }
 
-        h2 {
+        .form-step-title {
             color: var(--text-color);
+            margin-top: .5rem;
         }
 
         .checkbox-wrapper label,
