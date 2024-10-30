@@ -694,16 +694,28 @@ class WebflowMultistepForm {
     }
 
     /**
-     * Checks if a step contains only radio inputs.
+     * Checks if a step contains only radio inputs from a single group.
      * @param {jQuery} $step - The step to check
-     * @returns {boolean} Whether the step contains only radio inputs
+     * @returns {boolean} Whether the step contains only radio inputs from one group
      * @private
      */
     isRadioOnlyStep($step) {
         try {
             const inputs = $step.find('input:not([type="hidden"])');
-            const radios = $step.find('input[type="radio"]');
-            return inputs.length > 0 && inputs.length === radios.length;
+            if (inputs.length === 0) return false;
+
+            // Check if all inputs are radio buttons
+            const nonRadioInputs = inputs.filter((_, input) => input.type !== 'radio');
+            if (nonRadioInputs.length > 0) return false;
+
+            // Get unique radio groups
+            const radioGroups = new Set();
+            inputs.each((_, input) => {
+                if (input.name) radioGroups.add(input.name);
+            });
+
+            // Only return true if there's exactly one radio group
+            return radioGroups.size === 1;
         } catch (error) {
             console.error('Error in isRadioOnlyStep:', error);
             this.handleError(error);
