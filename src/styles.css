@@ -1,0 +1,275 @@
+        /* Add theme variables */
+        :root[data-theme="light"] {
+            --bg-color: #fff;
+            --text-color: #000;
+            --form-bg: #fff;
+            --input-bg: #fff;
+            --input-border: #ddd;
+            --shadow-color: rgba(0, 0, 0, 0.1);
+            --button-secondary: #e0e0e0;
+            --progress-bg: #eee;
+            --step-counter: #666;
+        }
+
+        :root[data-theme="dark"] {
+            --bg-color: #121212;
+            --text-color: #fff;
+            --form-bg: #1e1e1e;
+            --input-bg: #2d2d2d;
+            --input-border: #404040;
+            --shadow-color: rgba(0, 0, 0, 0.3);
+            --button-secondary: #404040;
+            --progress-bg: #333;
+            --step-counter: #aaa;
+        }
+
+        /* Update existing styles */
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-color);
+        }
+
+        .form-container {
+            background: var(--form-bg);
+            box-shadow: 0 0.125rem 0.625rem var(--shadow-color);
+        }
+
+        input[type="text"],
+        input[type="email"],
+        select {
+            background-color: var(--input-bg);
+            border-color: var(--input-border);
+            color: var(--text-color);
+        }
+
+        .form_button-prev {
+            background: var(--button-secondary);
+            color: var(--text-color);
+        }
+
+        /* Add theme switcher styles */
+        .theme-switch {
+            position: fixed;
+            bottom: 1.25rem;
+            right: 1.25rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .theme-switch button {
+            padding: 0.5rem 1rem;
+            border-radius: 0.25rem;
+            border: 0.0625rem solid var(--input-border);
+            background: var(--input-bg);
+            color: var(--text-color);
+            cursor: pointer;
+        }
+
+        /* Basic styling for demonstration */
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, sans-serif;
+            max-width: 37.5rem;
+            margin: 2.5rem auto;
+            padding: 0 1.25rem;
+        }
+
+        .form-container {
+            background: var(--form-bg);
+            padding: 1.875rem;
+            border-radius: 0.5rem;
+            box-shadow: 0 0.125rem 0.625rem var(--shadow-color);
+        }
+
+        .progress-container {
+            background: var(--progress-bg);
+            height: 0.25rem;
+            margin-bottom: 1.875rem;
+            border-radius: 0.125rem;
+        }
+
+        .progress-bar {
+            background: #2196F3;
+            height: 100%;
+            width: 0;
+            transition: width 0.3s ease;
+            border-radius: 0.125rem;
+        }
+
+        .step-counter {
+            font-size: 0.875rem;
+            color: var(--step-counter);
+            margin-bottom: 1.25rem;
+        }
+
+        .field-wrapper {
+            margin-bottom: 1.25rem;
+            display: flex;
+            flex-direction: column;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+        }
+
+        input[type="text"],
+        input[type="email"],
+        select {
+            padding: 0.5rem 0.75rem;
+            border: 0.0625rem solid var(--input-border);
+            border-radius: 0.25rem;
+            font-size: 1rem;
+        }
+
+        .checkbox-wrapper {
+            display: flex;
+            align-items: center;
+        }
+
+        .radio-group {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 1rem;
+            margin-bottom: 1.25rem;
+        }
+
+        .radio-wrapper {
+            position: relative;
+            display: block;
+        }
+
+        .radio-wrapper input[type="radio"] {
+            position: absolute;
+            opacity: 0;
+            width: 100%;
+            height: 100%;
+            cursor: pointer;
+        }
+
+        .radio-wrapper label {
+            display: block;
+            padding: 1rem;
+            background: var(--input-bg);
+            border: 2px solid var(--input-border);
+            border-radius: 0.5rem;
+            text-align: center;
+            transition: all 0.2s ease;
+            cursor: pointer;
+            margin: 0;
+        }
+
+        .radio-wrapper:hover label {
+            border-color: #2196F3;
+        }
+
+        .radio-wrapper input[type="radio"]:checked + label {
+            background: rgba(33, 150, 243, 0.1);
+            border-color: #2196F3;
+        }
+
+        .radio-wrapper input[type="radio"]:focus + label {
+            box-shadow: 0 0 0 2px rgba(33, 150, 243, 0.5);
+        }
+
+        .button-wrapper {
+            display: flex;
+            gap: 0.625rem;
+            margin-top: 1.875rem;
+            justify-content: flex-end;
+        }
+
+        .form_button-next,
+        .form_button-prev {
+            padding: 0.625rem 1.25rem;
+            border: none;
+            border-radius: 0.25rem;
+            cursor: pointer;
+            font-size: 1rem;
+            transition: opacity 0.2s;
+        }
+
+        .form_button-next {
+            background: #2196F3;
+            color: white;
+        }
+
+        .form_button-prev {
+            background: var(--button-secondary);
+        }
+
+        .form_button-next:hover,
+        .form_button-prev:hover {
+            opacity: 0.9;
+        }
+
+        .theme-switch button:hover {
+            opacity: 0.8;
+        }
+
+        .w-form-error {
+            display: none;
+            color: #dc3545;
+            font-size: 0.875rem;
+            margin-top: 0.25rem;
+        }
+
+        input.error {
+            border-color: #dc3545;
+        }
+
+        .loading-step {
+            text-align: center;
+            padding: 2.5rem 0;
+        }
+
+        .loading-spinner {
+            display: inline-block;
+        }
+
+        .spinner-border {
+            width: 3rem;
+            height: 3rem;
+            border: 0.25em solid currentColor;
+            border-right-color: transparent;
+            border-radius: 50%;
+            animation: spinner-border .75s linear infinite;
+        }
+
+        @keyframes spinner-border {
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
+        .visually-hidden {
+            position: absolute;
+            width: 0.0625rem;
+            height: 0.0625rem;
+            padding: 0;
+            margin: -0.0625rem;
+            overflow: hidden;
+            clip: rect(0, 0, 0, 0);
+            border: 0;
+        }
+
+        [aria-live="polite"] {
+            position: absolute;
+            width: 0.0625rem;
+            height: 0.0625rem;
+            padding: 0;
+            margin: -0.0625rem;
+            overflow: hidden;
+            clip: rect(0, 0, 0, 0);
+            border: 0;
+        }
+
+        h2 {
+            color: var(--text-color);
+        }
+
+        .checkbox-wrapper label,
+        .radio-wrapper label {
+            color: var(--text-color);
+        }
