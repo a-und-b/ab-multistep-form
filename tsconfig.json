@@ -1,0 +1,19 @@
+{
+  "compilerOptions": {
+    "target": "es5",
+    "module": "commonjs",
+    "lib": ["dom", "es6"],
+    "strict": false,
+    "esModuleInterop": true,
+    "skipLibCheck": true,
+    "forceConsistentCasingInFileNames": true,
+    "outDir": "./dist",
+    "declaration": true,
+    "sourceMap": true,
+    "rootDir": "./src",
+    "allowJs": true,  // Allow JavaScript files to be compiled
+    "checkJs": true   // Enable type checking on JavaScript files
+  },
+  "include": ["src/**/*"],
+  "exclude": ["node_modules", "dist"]
+}
